@@ -1,0 +1,24 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.4'  // La versión de Spring Boot que estás utilizando.
+    id 'java'
+}
+
+group = 'com.libreraium'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'  // Dependencia para Spring Web
+    implementation 'org.springframework.boot:spring-boot-starter-security'  // Dependencia para Spring Security
+    implementation 'org.springframework.boot:spring-boot-devtools'  // DevTools para reinicios automáticos
+    implementation 'io.jsonwebtoken:jjwt:0.11.5'  // Para manejar JWT
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'  // Para pruebas
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
