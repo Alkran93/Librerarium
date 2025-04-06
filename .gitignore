@@ -1,0 +1,59 @@
+=== GENERAL ===
+*.log
+*.tmp
+*.swp
+*.DS_Store
+.env
+.env.
+
+=== NODE (para cada microservicio Node.js) ===
+/auth-service/node_modules/
+/dist/
+/build/
+/.npm/
+/coverage/
+/package-lock.json
+/yarn.lock
+
+=== JAVA (para el API Gateway en Java) ===
+/target/
+/.classpath
+/.project
+/.settings/
+/.idea/
+/.vscode/
+/build/
+/out/
+
+Maven
+/pom.xml.tag
+/pom.xml.releaseBackup
+/pom.xml.versionsBackup
+/release.properties
+/dependency-reduced-pom.xml
+/buildNumber.properties
+
+Gradle
+/.gradle/
+/build/
+/gradle-app.setting
+/gradlew
+/gradlew.bat
+
+=== DOCKER & CI/CD (si usas) ===
+/.dockerignore
+docker-compose.override.yml
+/.env.local
+
+=== OS / Editor specific ===
+*.iml
+.idea/
+.vscode/
+Thumbs.db
+ehthumbs.db
+*.suo
+.ntvs
+*.njsproj
+*.sln
+*.psess
+*.user
