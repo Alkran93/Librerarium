@@ -5,6 +5,8 @@
 *.DS_Store
 .env
 .env.
+*.class
+
 
 === NODE (para cada microservicio Node.js) ===
 /auth-service/node_modules/
