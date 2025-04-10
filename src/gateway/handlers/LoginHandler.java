@@ -2,14 +2,14 @@ package src.gateway.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import src.gateway.util.Config;
+import src.gateway.util.JwtUtil;
 import src.gateway.util.LoggerUtil;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.stream.Collectors;
 
 public class LoginHandler implements HttpHandler {
     @Override
@@ -23,9 +23,12 @@ public class LoginHandler implements HttpHandler {
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json");
 
-            try (InputStream is = exchange.getRequestBody();
-                 OutputStream os = conn.getOutputStream()) {
-                is.transferTo(os);
+            // Forward client body to auth service
+            String requestBody = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))
+                    .lines().collect(Collectors.joining("\n"));
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(requestBody.getBytes());
             }
 
             int responseCode = conn.getResponseCode();
@@ -35,19 +38,40 @@ public class LoginHandler implements HttpHandler {
                     ? conn.getInputStream()
                     : conn.getErrorStream();
 
-            byte[] responseBody = responseStream.readAllBytes();
+            String responseBody = new BufferedReader(new InputStreamReader(responseStream))
+                    .lines().collect(Collectors.joining("\n"));
 
-            exchange.getResponseHeaders().set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(responseCode, responseBody.length);
+            if (responseCode == 200 && responseBody.contains("\"success\":true")) {
+                // Extract username from requestBody manually (since we didn't use a JSON parser)
+                String username = extractJsonField(requestBody, "username");
 
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(responseBody);
+                String token = JwtUtil.createToken(username);
+                String jsonResponse = "{ \"token\": \"" + token + "\" }";
+
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(jsonResponse.getBytes());
+                }
+
+            } else {
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(responseCode, responseBody.getBytes().length);
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(responseBody.getBytes());
+                }
             }
 
         } catch (Exception e) {
             LoggerUtil.log("Error handling /login: " + e.getMessage());
             sendJsonError(exchange, 503, "User authentication service is unavailable.");
         }
+    }
+
+    private String extractJsonField(String json, String key) {
+        String pattern = "\"" + key + "\"\\s*:\\s*\"(.*?)\"";
+        return json.matches(".*" + pattern + ".*") ?
+                json.replaceAll(".*" + pattern + ".*", "$1") : null;
     }
 
     private void sendJsonError(HttpExchange exchange, int statusCode, String message) {
