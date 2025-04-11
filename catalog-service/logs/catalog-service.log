@@ -1,0 +1,30 @@
+{"bookId":"67f6ce42dbfcb5fde48ce089","level":"info","message":"Libro creado exitosamente","requestId":"1744227906113","timestamp":"2025-04-09T19:45:06.132Z"}
+{"count":1,"level":"info","message":"Listado de libros recuperado","requestId":"1744227956738","timestamp":"2025-04-09T19:45:56.746Z"}
+{"count":1,"level":"info","message":"Listado de libros recuperado","requestId":"1744228042176","timestamp":"2025-04-09T19:47:22.178Z"}
+{"bookId":"67f6ce42dbfcb5fde48ce089","level":"info","message":"Libro actualizado","requestId":"1744228157085","timestamp":"2025-04-09T19:49:17.090Z"}
+{"count":1,"level":"info","message":"Listado de libros recuperado","requestId":"1744228203850","timestamp":"2025-04-09T19:50:03.851Z"}
+{"count":1,"level":"info","message":"Listado de libros recuperado","requestId":"1744228244885","timestamp":"2025-04-09T19:50:44.886Z"}
+{"count":1,"level":"info","message":"Listado de libros recuperado","requestId":"1744228254565","timestamp":"2025-04-09T19:50:54.567Z"}
+{"count":1,"level":"info","message":"Listado de libros recuperado","requestId":"1744228288079","timestamp":"2025-04-09T19:51:28.081Z"}
+{"bookId":"67f6cfe3dbfcb5fde48ce092","level":"info","message":"Libro creado exitosamente","requestId":"1744228323978","timestamp":"2025-04-09T19:52:03.980Z"}
+{"count":2,"level":"info","message":"Listado de libros recuperado","requestId":"1744228336801","timestamp":"2025-04-09T19:52:16.803Z"}
+{"bookId":"67f6cfe3dbfcb5fde48ce092","level":"info","message":"Libro eliminado","requestId":"1744228423677","timestamp":"2025-04-09T19:53:43.680Z"}
+{"count":1,"level":"info","message":"Listado de libros recuperado","requestId":"1744228432330","timestamp":"2025-04-09T19:53:52.331Z"}
+{"bookId":"67f6da6ddbfcb5fde48ce097","level":"info","message":"Libro creado exitosamente","requestId":"1744231021702","timestamp":"2025-04-09T20:37:01.704Z"}
+{"bookId":"67f6daabdbfcb5fde48ce099","level":"info","message":"Libro creado exitosamente","requestId":"1744231083840","timestamp":"2025-04-09T20:38:03.842Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102385\" }","level":"error","message":"Error al crear el libro","requestId":"1744231105378","timestamp":"2025-04-09T20:38:25.398Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102385\" }","level":"error","message":"Error global","requestId":"1744231105378","timestamp":"2025-04-09T20:38:25.401Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102485\" }","level":"error","message":"Error al crear el libro","requestId":"1744231115831","timestamp":"2025-04-09T20:38:35.834Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102485\" }","level":"error","message":"Error global","requestId":"1744231115831","timestamp":"2025-04-09T20:38:35.834Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102385\" }","level":"error","message":"Error al crear el libro","requestId":"1744231134034","timestamp":"2025-04-09T20:38:54.036Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102385\" }","level":"error","message":"Error global","requestId":"1744231134034","timestamp":"2025-04-09T20:38:54.037Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102485\" }","level":"error","message":"Error al crear el libro","requestId":"1744231138321","timestamp":"2025-04-09T20:38:58.323Z"}
+{"error":"E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261102485\" }","level":"error","message":"Error global","requestId":"1744231138321","timestamp":"2025-04-09T20:38:58.323Z"}
+{"count":3,"level":"info","message":"Listado de libros recuperado","requestId":"1744231148189","timestamp":"2025-04-09T20:39:08.196Z"}
+{"count":3,"level":"info","message":"Listado de libros recuperado","requestId":"1744231176095","timestamp":"2025-04-09T20:39:36.097Z"}
+{"error":"Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261103344\" }","level":"error","message":"Error al actualizar el libro","requestId":"1744231321397","timestamp":"2025-04-09T20:42:01.403Z"}
+{"error":"Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: catalogoLibros.books index: isbn_1 dup key: { isbn: \"978-0261103344\" }","level":"error","message":"Error global","requestId":"1744231321397","timestamp":"2025-04-09T20:42:01.404Z"}
+{"bookId":"67f6daabdbfcb5fde48ce099","level":"info","message":"Libro actualizado","requestId":"1744231342358","timestamp":"2025-04-09T20:42:22.361Z"}
+{"count":3,"level":"info","message":"Listado de libros recuperado","requestId":"1744231393343","timestamp":"2025-04-09T20:43:13.344Z"}
+{"bookId":"67f6da6ddbfcb5fde48ce097","level":"info","message":"Libro eliminado","requestId":"1744231436267","timestamp":"2025-04-09T20:43:56.270Z"}
+{"count":2,"level":"info","message":"Listado de libros recuperado","requestId":"1744231443894","timestamp":"2025-04-09T20:44:03.896Z"}
