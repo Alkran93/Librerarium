@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/streadway/amqp"
 	_ "modernc.org/sqlite"
 )
 
@@ -83,13 +84,49 @@ func addToCartHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkoutHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := db.Exec("DELETE FROM cart_items")
+	rows, err := db.Query("SELECT product_id, quantity FROM cart_items")
+	if err != nil {
+		http.Error(w, "Error leyendo carrito", 500)
+		return
+	}
+	defer rows.Close()
+
+	var cart []CartItem
+	for rows.Next() {
+		var item CartItem
+		rows.Scan(&item.ProductID, &item.Quantity)
+		cart = append(cart, item)
+	}
+
+	// Enviar a RabbitMQ
+	conn, err := amqp.Dial("amqp://user:password@34.205.157.11:5672/")
+	if err != nil {
+		log.Fatal("[Error] No se pudo conectar a RabbitMQ:", err)
+	}
+	defer conn.Close()
+	ch, _ := conn.Channel()
+	defer ch.Close()
+
+	ch.ExchangeDeclare("my_exchange", "direct", true, false, false, false, nil)
+
+	body, _ := json.Marshal(map[string]interface{}{
+		"evento": "checkout",
+		"items":  cart,
+	})
+
+	ch.Publish("my_exchange", "test", false, false, amqp.Publishing{
+		ContentType: "application/json",
+		Body:        body,
+	})
+
+	// Limpiar carrito
+	_, err = db.Exec("DELETE FROM cart_items")
 	if err != nil {
 		http.Error(w, "Failed to checkout", 500)
 		return
 	}
 
-	log.Println("Order placed and cart cleared.")
+	log.Println("Checkout enviado a MOM y carrito limpiado.")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"status": "order placed"})
 }

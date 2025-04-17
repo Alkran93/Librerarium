@@ -1,0 +1,17 @@
+{
+    "name": "catalog-service",
+    "version": "1.0.0",
+    "description": "Microservicio para la gestión del catálogo de libros",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "@grpc/grpc-js": "^1.5.4",
+        "@grpc/proto-loader": "^0.6.0",
+        "amqplib": "^0.10.7",
+        "express": "^4.17.1",
+        "mongoose": "^6.0.0",
+        "winston": "^3.3.3"
+    }
+}
