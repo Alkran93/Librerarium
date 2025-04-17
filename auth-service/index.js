@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const Database = require('better-sqlite3');
 
 const app = express();
 const db = new Database('auth.db');
 const PORT = 3000;
+const SECRET = 'super-secret-key';
 
 app.use(bodyParser.json());
 
@@ -32,7 +34,8 @@ app.post('/login', (req, res) => {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
 
-  return res.status(200).json({ success: true });
+  const token = jwt.sign({ sub: username, role: 'user' }, SECRET, { expiresIn: '1h' });
+  return res.status(200).json({ token });
 });
 
 app.listen(PORT, () => {
