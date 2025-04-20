@@ -3,8 +3,10 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/streadway/amqp"
@@ -83,7 +85,43 @@ func addToCartHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"status": "item added"})
 }
 
+var jwtSecret = []byte("super-secret-key")
+
+func getUsernameFromToken(r *http.Request) (string, error) {
+	authHeader := r.Header.Get("Authorization")
+	if !strings.HasPrefix(authHeader, "Bearer ") {
+		return "", http.ErrNoCookie // usar cualquier error
+	}
+
+	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+	if err != nil || !token.Valid {
+		return "", err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return "", err
+	}
+
+	username, ok := claims["sub"].(string)
+	if !ok {
+		return "", err
+	}
+
+	return username, nil
+}
+
 func checkoutHandler(w http.ResponseWriter, r *http.Request) {
+	username, err := getUsernameFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized or invalid token", http.StatusUnauthorized)
+		return
+	}
+
 	rows, err := db.Query("SELECT product_id, quantity FROM cart_items")
 	if err != nil {
 		http.Error(w, "Error leyendo carrito", 500)
@@ -99,7 +137,7 @@ func checkoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Enviar a RabbitMQ
-	conn, err := amqp.Dial("amqp://user:password@34.205.157.11:5672/")
+	conn, err := amqp.Dial("amqp://user:password@3.82.109.178:5672/")
 	if err != nil {
 		log.Fatal("[Error] No se pudo conectar a RabbitMQ:", err)
 	}
@@ -110,8 +148,9 @@ func checkoutHandler(w http.ResponseWriter, r *http.Request) {
 	ch.ExchangeDeclare("my_exchange", "direct", true, false, false, false, nil)
 
 	body, _ := json.Marshal(map[string]interface{}{
-		"evento": "checkout",
-		"items":  cart,
+		"evento":  "checkout",
+		"usuario": username,
+		"items":   cart,
 	})
 
 	ch.Publish("my_exchange", "test", false, false, amqp.Publishing{
@@ -126,7 +165,7 @@ func checkoutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("Checkout enviado a MOM y carrito limpiado.")
+	log.Printf("Checkout de %s enviado a MOM y carrito limpiado.\n", username)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"status": "order placed"})
 }
