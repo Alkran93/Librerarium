@@ -2,16 +2,27 @@ package mom
 
 import (
 	"encoding/json"
+	"github.com/joho/godotenv"
 	"log"
+	"os"
 
 	"github.com/streadway/amqp"
 )
 
-var exchangeName = "my_exchange"
-var routingKey = "test"
-var amqpURL = "amqp://user:password@34.205.157.11:5672/"
+func PublishCheckout(username string, cart interface{}) error {
 
-func PublishCheckout(cart interface{}) error {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error cargando .env")
+	}
+
+	var amqpURL = "amqp://" + os.Getenv("MOM_USER") + ":" +
+		os.Getenv("MOM_PASSWORD") + "@" +
+		os.Getenv("MOM_HOST") + ":" +
+		os.Getenv("MOM_PORT") + "/"
+	var exchange = os.Getenv("MOM_EXCHANGE")
+	var routingKey = os.Getenv("MOM_ROUTING_KEYE")
+
 	conn, err := amqp.Dial(amqpURL)
 	if err != nil {
 		return err
@@ -24,17 +35,18 @@ func PublishCheckout(cart interface{}) error {
 	}
 	defer ch.Close()
 
-	err = ch.ExchangeDeclare(exchangeName, "direct", true, false, false, false, nil)
+	err = ch.ExchangeDeclare(exchange, "direct", true, false, false, false, nil)
 	if err != nil {
 		return err
 	}
 
 	body, _ := json.Marshal(map[string]interface{}{
-		"evento": "checkout",
-		"items":  cart,
+		"evento":  "checkout",
+		"usuario": username,
+		"items":   cart,
 	})
 
-	err = ch.Publish(exchangeName, routingKey, false, false, amqp.Publishing{
+	err = ch.Publish(exchange, routingKey, false, false, amqp.Publishing{
 		ContentType: "application/json",
 		Body:        body,
 	})
@@ -42,6 +54,6 @@ func PublishCheckout(cart interface{}) error {
 		return err
 	}
 
-	log.Println("[MOM] Checkout published")
+	log.Printf("[MOM] Checkout enviado por %s\n", username)
 	return nil
 }
