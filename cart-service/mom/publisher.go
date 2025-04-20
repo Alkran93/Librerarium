@@ -7,11 +7,11 @@ import (
 	"github.com/streadway/amqp"
 )
 
-var exchangeName = "my_exchange"
-var routingKey = "test"
-var amqpURL = "amqp://user:password@34.205.157.11:5672/"
+const amqpURL = "amqp://user:password@3.82.109.178:5672/"
+const exchange = "my_exchange"
+const routingKey = "test"
 
-func PublishCheckout(cart interface{}) error {
+func PublishCheckout(username string, cart interface{}) error {
 	conn, err := amqp.Dial(amqpURL)
 	if err != nil {
 		return err
@@ -24,17 +24,18 @@ func PublishCheckout(cart interface{}) error {
 	}
 	defer ch.Close()
 
-	err = ch.ExchangeDeclare(exchangeName, "direct", true, false, false, false, nil)
+	err = ch.ExchangeDeclare(exchange, "direct", true, false, false, false, nil)
 	if err != nil {
 		return err
 	}
 
 	body, _ := json.Marshal(map[string]interface{}{
-		"evento": "checkout",
-		"items":  cart,
+		"evento":  "checkout",
+		"usuario": username,
+		"items":   cart,
 	})
 
-	err = ch.Publish(exchangeName, routingKey, false, false, amqp.Publishing{
+	err = ch.Publish(exchange, routingKey, false, false, amqp.Publishing{
 		ContentType: "application/json",
 		Body:        body,
 	})
@@ -42,6 +43,6 @@ func PublishCheckout(cart interface{}) error {
 		return err
 	}
 
-	log.Println("[MOM] Checkout published")
+	log.Printf("[MOM] Checkout enviado por %s\n", username)
 	return nil
 }
