@@ -3,7 +3,6 @@ package src.gateway.handlers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import src.gateway.util.Config;
-import src.gateway.util.JwtUtil;
 import src.gateway.util.LoggerUtil;
 
 import java.io.*;
@@ -41,37 +40,17 @@ public class LoginHandler implements HttpHandler {
             String responseBody = new BufferedReader(new InputStreamReader(responseStream))
                     .lines().collect(Collectors.joining("\n"));
 
-            if (responseCode == 200 && responseBody.contains("\"success\":true")) {
-                // Extract username from requestBody manually (since we didn't use a JSON parser)
-                String username = extractJsonField(requestBody, "username");
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(responseCode, responseBody.getBytes().length);
 
-                String token = JwtUtil.createToken(username);
-                String jsonResponse = "{ \"token\": \"" + token + "\" }";
-
-                exchange.getResponseHeaders().set("Content-Type", "application/json");
-                exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write(jsonResponse.getBytes());
-                }
-
-            } else {
-                exchange.getResponseHeaders().set("Content-Type", "application/json");
-                exchange.sendResponseHeaders(responseCode, responseBody.getBytes().length);
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write(responseBody.getBytes());
-                }
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(responseBody.getBytes());
             }
 
         } catch (Exception e) {
             LoggerUtil.log("Error handling /login: " + e.getMessage());
             sendJsonError(exchange, 503, "User authentication service is unavailable.");
         }
-    }
-
-    private String extractJsonField(String json, String key) {
-        String pattern = "\"" + key + "\"\\s*:\\s*\"(.*?)\"";
-        return json.matches(".*" + pattern + ".*") ?
-                json.replaceAll(".*" + pattern + ".*", "$1") : null;
     }
 
     private void sendJsonError(HttpExchange exchange, int statusCode, String message) {
