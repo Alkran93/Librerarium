@@ -1,8 +1,8 @@
-const { getUserByUsername } = require('./userModel');
-const { createToken } = require('./jwtUtil');
-const { publishUserEvent } = require('./events');
+const { getUserByUsername } = require('../models/userModel');
+const { createToken } = require('../util/jwtUtil');
+const { publishUserEvent } = require('../mom/publisher');
 
-function loginHandler(req, res) {
+async function loginHandler(req, res) {
   const { username, password } = req.body;
 
   const user = getUserByUsername(username);
@@ -12,7 +12,7 @@ function loginHandler(req, res) {
 
   const token = createToken(username);
 
-  publishUserEvent('user_logged_in', {
+  await publishUserEvent('user_logged_in', {
     username,
     timestamp: new Date().toISOString()
   });
