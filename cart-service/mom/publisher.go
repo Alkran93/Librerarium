@@ -2,16 +2,27 @@ package mom
 
 import (
 	"encoding/json"
+	"github.com/joho/godotenv"
 	"log"
+	"os"
 
 	"github.com/streadway/amqp"
 )
 
-const amqpURL = "amqp://user:password@3.82.109.178:5672/"
-const exchange = "my_exchange"
-const routingKey = "test"
-
 func PublishCheckout(username string, cart interface{}) error {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error cargando .env")
+	}
+
+	var amqpURL = "amqp://" + os.Getenv("MOM_USER") + ":" +
+		os.Getenv("MOM_PASSWORD") + "@" +
+		os.Getenv("MOM_HOST") + ":" +
+		os.Getenv("MOM_PORT") + "/"
+	var exchange = os.Getenv("MOM_EXCHANGE")
+	var routingKey = os.Getenv("MOM_ROUTING_KEYE")
+
 	conn, err := amqp.Dial(amqpURL)
 	if err != nil {
 		return err

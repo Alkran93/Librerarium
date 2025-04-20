@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 const { loginHandler } = require('./controllers/authController');
 const { createTestUser } = require('./models/userModel');
 
+require('dotenv').config();
+
 const app = express();
-const PORT = 3000;
-const SECRET = 'super-secret-key';
+const PORT = process.env.AUTH_PORT;
+const SECRET = process.env.JWT_SECRET;
 
 app.use(bodyParser.json());
 createTestUser();

@@ -1,8 +1,9 @@
 const amqp = require('amqplib');
+require('dotenv').config();
 
-const EXCHANGE = 'my_exchange';
-const ROUTING_KEY = 'test';
-const AMQP_URL = 'amqp://user:password@3.82.109.178:5672/';
+const EXCHANGE = process.env.MOM_EXCHANGE;
+const ROUTING_KEY = process.env.MOM_ROUTING_KEYE;
+const AMQP_URL =`amqp://${process.env.MOM_USER}:${process.env.MOM_PASSWORD}@${process.env.MOM_HOST}:${process.env.MOM_PORT}/`;
 
 async function publishUserEvent(eventName, payload) {
   try {

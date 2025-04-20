@@ -2,6 +2,9 @@ const express = require('express');
 const connectDB = require('./config/db');
 const bookRoutes = require('./routes/books');
 const errorHandler = require('./middlewares/errorHandler');
+const startConsumer = require('./middlewares/rabbitConsumer');
+
+require('dotenv').config();
 
 const app = express();
 
@@ -35,7 +38,14 @@ app.use((err, req, res, next) => {
 });
 
 // Levantar el servidor
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Catalog Service escuchando en el puerto ${PORT}`));
+const PORT = process.env.CATALOG_PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Catalog Service escuchando en el puerto ${PORT}`);
+  
+  // Iniciar el consumidor de RabbitMQ
+  startConsumer()
+    .then(() => console.log('✅ Consumidor RabbitMQ iniciado'))
+    .catch(err => console.error('❌ Error al iniciar el consumidor:', err));
+});
 
 module.exports = app;

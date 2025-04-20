@@ -1,9 +1,13 @@
 const amqp = require('amqplib');
 const mongoose = require('mongoose');
-const Book = require('./models/Book');
-const connectDB = require('./db');
+const Book = require('../models/Book');
+const connectDB = require('../config/db');
 
-const RABBITMQ_URL = 'amqp://user:password@3.82.109.178:5672/';
+require('dotenv').config();
+
+const EXCHANGE = process.env.MOM_EXCHANGE;
+const ROUTING_KEY = process.env.MOM_ROUTING_KEYE;
+const RABBITMQ_URL =`amqp://${process.env.MOM_USER}:${process.env.MOM_PASSWORD}@${process.env.MOM_HOST}:${process.env.MOM_PORT}/`;
 
 async function startConsumer() {
   await connectDB();
@@ -11,10 +15,10 @@ async function startConsumer() {
   const conn = await amqp.connect(RABBITMQ_URL);
   const channel = await conn.createChannel();
 
-  await channel.assertExchange('my_exchange', 'direct', { durable: true });
+  await channel.assertExchange(EXCHANGE, 'direct', { durable: true });
   const q = await channel.assertQueue('my_app', { durable: true });
 
-  await channel.bindQueue(q.queue, 'my_exchange', 'test');
+  await channel.bindQueue(q.queue, EXCHANGE, ROUTING_KEY);
 
   console.log('[Consumer] Esperando mensajes...');
 
@@ -45,4 +49,4 @@ async function startConsumer() {
   });
 }
 
-startConsumer().catch(console.error);
+module.exports = startConsumer;
