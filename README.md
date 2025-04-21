@@ -120,22 +120,22 @@ Returns:
 
  Steps
 
-# 1. Run Auth Service
+#### 1. Run Auth Service
 cd auth-service
 npm install
 node index.js
 
-# 2. Run Cart Service
+#### 2. Run Cart Service
 cd cart-service
 go mod tidy
 go run main.go
 
-# 3. Run Product Service
+#### 3. Run Product Service
 cd product-service
 go mod tidy
 go run main.go
 
-# 4. Run API Gateway (Java)
+#### 4. Run API Gateway (Java)
 cd api-gateway
 javac -d out src/**/*.java
 java -cp out gateway.ApiGateway
@@ -158,15 +158,13 @@ java -cp out gateway.ApiGateway
 
 ###C4 Model
 
-- Context Diagram :
-- Container Diagram :
-- Component Diagram :
+- Context Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?viewport_loc=-1737%2C-278%2C3967%2C1678%2Cb9S2d_7k1Kx_&invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080
+- Container Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080&page=0_0#
+- Component Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080&page=Qne3QwGfOkIq#
 
 ###UML Diagrams
 
-- Class Diagram :
-- Sequence Diagram :
-- Communication Diagram :
+- Class Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080&page=oEe3SYk.-wl8#
 
 
  Authors
