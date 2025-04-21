@@ -19,7 +19,7 @@
 - Java-based API Gateway
 - Node.js Auth service (with JWT + SQLite)
 - Go-based Cart & Product services (with SQLite)
-- Communication via HTTP and gRPC (future)
+- Communication via HTTP
 - Asynchronous messaging via RabbitMQ (MOM)
 - Token-based authorization using JWT
 
