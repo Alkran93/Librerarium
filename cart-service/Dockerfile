@@ -16,7 +16,7 @@ COPY . .
 RUN go build -o main .
 
 # Expone el puerto en el que la aplicación escuchará
-EXPOSE 8080
+EXPOSE 3002
 
 # Comando por defecto para ejecutar la aplicación
 CMD ["./main"]
