@@ -32,7 +32,7 @@
 - **API Gateway (Java):** Central point for client communication, token validation, and routing
 - **Auth Service (Node.js):** Handles user login and registration, emits events to RabbitMQ
 - **Cart Service (Go):** Manages cart items, checkout, and sends events to MOM
-- **Product Service (Go):** Manages catalog of books
+- **Product Service (Node.js):** Manages catalog of books
 - **MOM Middleware (RabbitMQ):** Guarantees delivery of checkout and login events
 - **SQLite Databases:** Lightweight storage for each service (decoupled persistence)
 
@@ -47,7 +47,7 @@
 | API Gateway      | Java     | Routing, token validation, logging          |
 | Auth Service     | Node.js  | Auth, token generation, MOM publishing      |
 | Cart Service     | Go       | Cart logic, JWT check, checkout via MOM     |
-| Product Service  | Go       | Catalog logic (add/list books)              |
+| Product Service  | Node.js  | Catalog logic (add/list books)              |
 | MOM (RabbitMQ)   | N/A      | Message bus for `checkout`, `login` events  |
 
 ###  Token Handling
@@ -119,7 +119,7 @@ cd api-gateway
 javac -d out src/**/*.java
 java -cp out gateway.ApiGateway
 
-    RabbitMQ should be running and reachable by all services.
+    RabbitMQ should be running in an AWS instance and reachable by all services: http://13.217.187.199:15672/
 
  6. Usage Example
 
