@@ -156,13 +156,13 @@ java -cp out gateway.ApiGateway
 
 ##  7. Architecture Model
 
-###C4 Model
+### C4 Model
 
 - Context Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?viewport_loc=-1737%2C-278%2C3967%2C1678%2Cb9S2d_7k1Kx_&invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080
 - Container Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080&page=0_0#
 - Component Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080&page=Qne3QwGfOkIq#
 
-###UML Diagrams
+### UML Diagrams
 
 - Class Diagram : https://lucid.app/lucidchart/67e71b2c-10c1-4953-87b5-a9fed9e28d41/edit?invitationId=inv_c07f0cfd-4002-468e-84a8-14132aff1080&page=oEe3SYk.-wl8#
 
