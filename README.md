@@ -3,6 +3,20 @@
 **Libreraium** is a distributed e-commerce system for buying digital and physical books, built with a **microservices architecture** and accessed via a **console-based client**. It focuses on modularity, fault tolerance, and message-oriented communication.
 
 ---
+### Objectives
+
+- Develop a distributed application using microservices architecture, leveraging technologies such as gRPC and Message-Oriented Middleware (MOM).
+- Implement an API Gateway in Java to handle user authentication.
+- Coordinate communication between microservices and users via the API Gateway.
+- Create microservices in Node.js and C++ for managing products, shopping cart, and orders.
+- Ensure fault tolerance using MOM middleware in C++ with RabbitMQ for guaranteed message delivery.
+
+### Scope
+- The system does not include a web UI and operates solely through a console-based interface.
+- The API Gateway centralizes client requests and distributes them to microservices.
+- The system consists of three main microservices: User, Product (Books), and Cart/Orders.
+- A MOM middleware (RabbitMQ) is implemented for asynchronous communication, ensuring message persistence and fault tolerance.
+- The system generates log files to track events and errors.
 
 ## 1. Requirements
 
@@ -13,6 +27,13 @@
 - Shopping cart & checkout
 - Order messaging via RabbitMQ (MOM)
 - Console-based interface (no web UI)
+
+### Non-Functional Requirements
+
+- Scalability: The system should handle increased user and service demands efficiently.
+- Security: The system must have JWT authentication and authorization mechanisms to ensure users only access permitted resources.
+- Fault Tolerance: The system must be resilient to failures, utilizing MOM middleware to ensure message delivery even when a microservice is unavailable.
+- Performance: Communication between microservices should be low-latency, with fast response times
 
 ### Technical Requirements
 
@@ -84,7 +105,7 @@ Returns:
 
 { "token": "..." }
 
- 5. Running the System
+##  5. Running the System
  Requirements
 
     Node.js (v18+)
@@ -121,7 +142,7 @@ java -cp out gateway.ApiGateway
 
     RabbitMQ should be running in an AWS instance and reachable by all services: http://13.217.187.199:15672/
 
- 6. Usage Example
+##  6. Usage Example
 
     Login to receive a token
 
@@ -132,6 +153,21 @@ java -cp out gateway.ApiGateway
     Checkout triggers event to RabbitMQ
 
     MOM receives checkout and logs or forwards to consumers
+
+##  7. Architecture Model
+
+###C4 Model
+
+- Context Diagram :
+- Container Diagram :
+- Component Diagram :
+
+###UML Diagrams
+
+- Class Diagram :
+- Sequence Diagram :
+- Communication Diagram :
+
 
  Authors
 
