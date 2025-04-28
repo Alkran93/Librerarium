@@ -131,9 +131,9 @@ go mod tidy
 go run main.go
 
 #### 3. Run Product Service
-cd product-service
-go mod tidy
-go run main.go
+cd catalog-service
+npm install
+node app.js
 
 #### 4. Run API Gateway (Java)
 cd api-gateway
